@@ -473,6 +473,137 @@ function openCategory(modalId) {
         })
     .catch(error => console.log('error', error));
  }
+// function to update admin profile
+function upDateAdmin(event){
+    event.preventDefault();
+
+    const getSpin = document.querySelector(".spin");
+    getSpin.style.display = "inline-block";
+
+    const getName = document.getElementById("updateName").value;
+    const getEmail = document.getElementById("updateEmail").value;
+   
+    if (getName === "" || getEmail === "") {
+        Swal.fire({
+            icon: 'info',
+            text: 'All fields is required!',
+            confirmButtonColor: "#2D85DE"
+        })
+        getSpin.style.display = "none";
+    }
+    else {
+        const getToken = localStorage.getItem('admin');
+        const token = JSON.parse(getToken);
+        const myToken = token.token;
+
+        const myHeaders = new Headers();
+            myHeaders.append("Authorization", `Bearer ${myToken}`);
+
+        const adminFormData = new FormData();
+            adminFormData.append("name", getName);
+            adminFormData.append("email", getEmail);
+
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: adminFormData
+        };
+
+        const url = "https://pluralcodesandbox.com/yorubalearning/api/admin/admin_update_profile";
+        fetch(url, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            console.log(result)
+            if (result.status === "success") {
+                Swal.fire({
+                    icon: 'success',
+                    text: `${result.message}`,
+                    confirmButtonColor: '#2D85DE'
+                })
+                // setTimeout(() => {
+                //     location.reload();
+                // }, 3000)
+                getSpin.style.display = "none";
+            }
+            else{
+                Swal.fire({
+                    icon: 'info',
+                    text: 'Unsuccessful!',
+                    confirmButtonColor: '#2D85DE'
+                })
+                getSpin.style.display = "none";
+            }
+        })
+        .catch(error => console.log('error', error));
+    }
+}
+// update password function 
+function upDatePassword(event){
+    event.preventDefault();
+
+    const getSpin = document.querySelector(".spinx");
+    getSpin.style.display = "inline-block";
+
+    const getEmail = document.getElementById("updatePassEmail").value;
+    const getPassword = document.getElementById("updatePassword").value;
+    const getConfirmPassword = document.getElementById("confirmPassword").value;
+   
+    if (getEmail === "" || getPassword === "" || getConfirmPassword === "") {
+        Swal.fire({
+            icon: 'info',
+            text: 'All fields are required!',
+            confirmButtonColor: "#2D85DE"
+        })
+        getSpin.style.display = "none";
+    }
+    else {
+        const getToken = localStorage.getItem('admin');
+        const token = JSON.parse(getToken);
+        const myToken = token.token;
+
+        const myHeaders = new Headers();
+            myHeaders.append("Authorization", `Bearer ${myToken}`);
+
+        const adminFormData = new FormData();
+            adminFormData.append("email", getEmail);
+            adminFormData.append("password", getPassword);
+            adminFormData.append("password_confirmation", getConfirmPassword);
+            
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: adminFormData
+        };
+
+        const url = "https://pluralcodesandbox.com/yorubalearning/api/admin/admin_update_password";
+        fetch(url, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            console.log(result)
+            if (result.status === "success") {
+                Swal.fire({
+                    icon: 'success',
+                    text: `${result.message}`,
+                    confirmButtonColor: '#2D85DE'
+                })
+                // setTimeout(() => {
+                //     location.reload();
+                // }, 3000)
+                getSpin.style.display = "none";
+            }
+            else{
+                Swal.fire({
+                    icon: 'info',
+                    text: `Unsuccessful, ${result.message}`,
+                    confirmButtonColor: '#2D85DE'
+                })
+                getSpin.style.display = "none";
+            }
+        })
+        .catch(error => console.log('error', error));
+    }
+}
+
 
  function closeModal3() {
     const myModal = document.getElementById("my-modal3");
